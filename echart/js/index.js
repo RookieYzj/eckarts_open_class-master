@@ -25,15 +25,7 @@
     xAxis: [
       {
         type: "category",
-        data: [
-          "旅游行业",
-          "教育培训",
-          "游戏行业",
-          "医疗行业",
-          "电商行业",
-          "社交行业",
-          "金融行业"
-        ],
+        data: eval(data),
         axisTick: {
           alignWithLabel: true
         },
