@@ -12,6 +12,7 @@
       <h1>可视化展板-ECharts</h1>
       <div class="showTime">当前时间：2020年3月17-0时54分14秒</div>
       <script>
+        /////
         var t = null;
         t = setTimeout(time, 1000); //開始运行
         function time() {
@@ -39,25 +40,32 @@
             "秒";
           t = setTimeout(time, 1000); //设定定时器，循环运行
         }
+        console.log(11111)
       </script>
     </header>
     <section class="mainbox">
       <div class="column">
         <div class="panel bar">
           <h2>
-            柱状图-就业行业 <a href="javascript:">2019</a>
-            <a href="javacript:"> 2020</a>
+            一氧化碳（CO）浓度超标累计 <!--<a href="javascript:">2019</a>
+            <a href="javacript:"> 2020</a>-->
           </h2>
           <div class="chart"></div>
           <div class="panel-footer"></div>
         </div>
-        <div class="panel line">
-          <h2>折线图-人员变化</h2>
+        <div class="panel bar1">
+          <h2>
+            二氧化硫（SO2）浓度超标累计 <!--<a href="javascript:">2019</a>
+            <a href="javacript:"> 2020</a>-->
+          </h2>
           <div class="chart"></div>
           <div class="panel-footer"></div>
         </div>
-        <div class="panel pie">
-          <h2>饼形图-年龄分布</h2>
+        <div class="panel bar2">
+          <h2>
+            可吸入颗粒物（PM2.5）浓度超标累计 <!--<a href="javascript:">2019</a>
+            <a href="javacript:"> 2020</a>-->
+          </h2>
           <div class="chart"></div>
           <div class="panel-footer"></div>
         </div>
@@ -85,13 +93,14 @@
         </div>
       </div>
       <div class="column">
-        <div class="panel bar1">
-          <h2>柱状图-技能掌握</h2>
+
+        <div class="panel line">
+          <h2>折线图-人员变化</h2>
           <div class="chart"></div>
           <div class="panel-footer"></div>
         </div>
-        <div class="panel line1">
-          <h2>折线图-播放量</h2>
+        <div class="panel pie">
+          <h2>饼形图-年龄分布</h2>
           <div class="chart"></div>
           <div class="panel-footer"></div>
         </div>

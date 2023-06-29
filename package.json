@@ -1,0 +1,8 @@
+{
+  "name": "eckarts_open_class-master",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "axios": "^1.4.0"
+  }
+}

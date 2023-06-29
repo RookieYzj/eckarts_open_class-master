@@ -1,97 +1,355 @@
 // 柱状图1模块
-
 (function() {
-  // 实例化对象
   var myChart = echarts.init(document.querySelector(".bar .chart"));
-  // 指定配置和数据
-  const data = localStorage.getItem("a")//获取china.js发送的省份名称
-  console.log(data)
-  var option = {
-    color: ["#2f89cf"],
-    tooltip: {
-      trigger: "axis",
-      axisPointer: {
-        // 坐标轴指示器，坐标轴触发有效
-        type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
-      }
-    },
-    grid: {
-      left: "0%",
-      top: "10px",
-      right: "0%",
-      bottom: "4%",
-      containLabel: true
-    },
-    xAxis: [
+  //const data = localStorage.getItem("a")//获取china.js发送的省份名称
+  var data1=[]
+  var data2=[]
+//获取后台数据
+  const Http = new XMLHttpRequest();
+  const url='http://43.143.201.120:9999/statistics/listProvinceItemTotalStatis';
+  Http.open("POST", url);
+  Http.send();
+  var temp=[]
+  Http.onreadystatechange =function(){
+    if(this.readyState==4)
+    {
+      console.log(Http.response)
+      temp=eval(Http.response)
+      for(var i=0;i<temp.length;i++)
       {
-        type: "category",
-        data: eval(data),
-        axisTick: {
-          alignWithLabel: true
-        },
-        axisLabel: {//横坐标字体格式
-          textStyle: {
-            color: "rgba(255,255,255,.6)",
-            fontSize: "12"
-          }
-        },
-        axisLine: {
-          show: false
-        }
+        data1.push(temp[i].provinceAbbr)
+        data2.push(temp[i].coTotal)
       }
-    ],
-    yAxis: [//纵坐标字体格式
-      {
-        type: "value",
-        axisLabel: {
-          textStyle: {
-            color: "rgba(255,255,255,.6)",
-            fontSize: "12"
-          }
-        },
-        axisLine: {
-          lineStyle: {
-            color: "rgba(255,255,255,.1)"
-            // width: 1,
-            // type: "solid"
-          }
-        },
-        splitLine: {
-          lineStyle: {
-            color: "rgba(255,255,255,.1)"
+      console.log(data1)
+    }
+  }
+  //异步操作（回调函数）
+  setTimeout(() => {
+    var option = {
+      color: ["#e83d3d"],
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          // 坐标轴指示器，坐标轴触发有效
+          type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+        }
+      },
+
+      grid: {
+        left: "0%",
+        top: "10px",
+        right: "0%",
+        bottom: "4%",
+        containLabel: true
+      },
+      xAxis: [
+        {
+          type: "category",
+          data: data1,
+          axisTick: {
+            alignWithLabel: true
+          },
+          axisLabel: {//横坐标字体格式
+            textStyle: {
+
+              color: "rgba(255,255,255,.6)",
+              fontSize: "12"
+            }
+          },
+          axisLine: {
+            show: false
           }
         }
-      }
-    ],
-    series: [
-      {
-        name: "直接访问",
-        type: "bar",
-        barWidth: "35%",
-        data: [200, 300, 300, 900, 1500, 1200, 600],
-        itemStyle: {
-          barBorderRadius: 5
+      ],
+      yAxis: [//纵坐标字体格式
+        {
+          type: "value",
+          axisLabel: {
+            textStyle: {
+              color: "rgba(255,255,255,.6)",
+              fontSize: "12"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "rgba(255,255,255,.1)"
+              // width: 1,
+              // type: "solid"
+            }
+          },
+          splitLine: {
+            lineStyle: {
+              color: "rgba(255,255,255,.1)"
+            }
+          }
         }
-      }
-    ]
-  };
+      ],
+      series: [
+        {
+          name: "超标次数",
+          type: "bar",
+          barWidth: "35%",
+          data: data2,
+          itemStyle: {
+            barBorderRadius: 5
+          }
+        }
+      ]
+    };
 
-  // 把配置给实例对象
-  myChart.setOption(option);
-  window.addEventListener("resize", function() {
-    myChart.resize();
-  });
-
-  // 数据变化
-  var dataAll = [
-    { year: "2019", data: [200, 300, 300, 900, 1500, 1200, 600] },
-    { year: "2020", data: [300, 400, 350, 800, 1800, 1400, 700] }
-  ];
-
-  $(".bar h2 ").on("click", "a", function() {
-    option.series[0].data = dataAll[$(this).index()].data;
+    // 把配置给实例对象
     myChart.setOption(option);
-  });
+    window.addEventListener("resize", function() {
+      myChart.resize();
+    });
+
+    // 数据变化
+    var dataAll = [
+      { year: "2019", data: [200, 300, 300, 900, 1500, 1200, 600] },
+      { year: "2020", data: [300, 400, 350, 800, 1800, 1400, 700] }
+    ];
+
+    $(".bar h2 ").on("click", "a", function() {
+      option.series[0].data = dataAll[$(this).index()].data;
+      myChart.setOption(option);
+    });
+  }, 1000)
+})();
+
+// 柱状图2模块
+(function() {
+  var myChart = echarts.init(document.querySelector(".bar1 .chart"));
+  //const data = localStorage.getItem("a")//获取china.js发送的省份名称
+  var data1=[]
+  var data2=[]
+//获取后台数据
+  const Http = new XMLHttpRequest();
+  const url='http://43.143.201.120:9999/statistics/listProvinceItemTotalStatis';
+  Http.open("POST", url);
+  Http.send();
+  var temp=[]
+  Http.onreadystatechange =function(){
+    if(this.readyState==4)
+    {
+      console.log(Http.response)
+      temp=eval(Http.response)
+      for(var i=0;i<temp.length;i++)
+      {
+        data1.push(temp[i].provinceAbbr)
+        data2.push(temp[i].so2Total)
+      }
+      console.log(data1)
+    }
+  }
+  //异步操作（回调函数）
+  setTimeout(() => {
+    var option = {
+      color: ["#e8c63d"],
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          // 坐标轴指示器，坐标轴触发有效
+          type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+        }
+      },
+
+      grid: {
+        left: "0%",
+        top: "10px",
+        right: "0%",
+        bottom: "4%",
+        containLabel: true
+      },
+      xAxis: [
+        {
+          type: "category",
+          data: data1,
+          axisTick: {
+            alignWithLabel: true
+          },
+          axisLabel: {//横坐标字体格式
+            textStyle: {
+
+              color: "rgba(255,255,255,.6)",
+              fontSize: "12"
+            }
+          },
+          axisLine: {
+            show: false
+          }
+        }
+      ],
+      yAxis: [//纵坐标字体格式
+        {
+          type: "value",
+          axisLabel: {
+            textStyle: {
+              color: "rgba(255,255,255,.6)",
+              fontSize: "12"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "rgba(255,255,255,.1)"
+              // width: 1,
+              // type: "solid"
+            }
+          },
+          splitLine: {
+            lineStyle: {
+              color: "rgba(255,255,255,.1)"
+            }
+          }
+        }
+      ],
+      series: [
+        {
+          name: "超标次数",
+          type: "bar",
+          barWidth: "35%",
+          data: data2,
+          itemStyle: {
+            barBorderRadius: 5
+          }
+        }
+      ]
+    };
+
+    // 把配置给实例对象
+    myChart.setOption(option);
+    window.addEventListener("resize", function() {
+      myChart.resize();
+    });
+
+    // 数据变化
+    var dataAll = [
+      { year: "2019", data: [200, 300, 300, 900, 1500, 1200, 600] },
+      { year: "2020", data: [300, 400, 350, 800, 1800, 1400, 700] }
+    ];
+
+    $(".bar h2 ").on("click", "a", function() {
+      option.series[0].data = dataAll[$(this).index()].data;
+      myChart.setOption(option);
+    });
+  }, 1000)
+})();
+
+//柱状图3
+(function() {
+  var myChart = echarts.init(document.querySelector(".bar2 .chart"));
+  //const data = localStorage.getItem("a")//获取china.js发送的省份名称
+  var data1=[]
+  var data2=[]
+//获取后台数据
+  const Http = new XMLHttpRequest();
+  const url='http://43.143.201.120:9999/statistics/listProvinceItemTotalStatis';
+  Http.open("POST", url);
+  Http.send();
+  var temp=[]
+  Http.onreadystatechange =function(){
+    if(this.readyState==4)
+    {
+      console.log(Http.response)
+      temp=eval(Http.response)
+      for(var i=0;i<temp.length;i++)
+      {
+        data1.push(temp[i].provinceAbbr)
+        data2.push(temp[i].spmTotal)
+      }
+      console.log(data1)
+    }
+  }
+  //异步操作（回调函数）
+  setTimeout(() => {
+    var option = {
+      color: ["#9b3de8"],
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          // 坐标轴指示器，坐标轴触发有效
+          type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+        }
+      },
+
+      grid: {
+        left: "0%",
+        top: "10px",
+        right: "0%",
+        bottom: "4%",
+        containLabel: true
+      },
+      xAxis: [
+        {
+          type: "category",
+          data: data1,
+          axisTick: {
+            alignWithLabel: true
+          },
+          axisLabel: {//横坐标字体格式
+            textStyle: {
+
+              color: "rgba(255,255,255,.6)",
+              fontSize: "12"
+            }
+          },
+          axisLine: {
+            show: false
+          }
+        }
+      ],
+      yAxis: [//纵坐标字体格式
+        {
+          type: "value",
+          axisLabel: {
+            textStyle: {
+              color: "rgba(255,255,255,.6)",
+              fontSize: "12"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: "rgba(255,255,255,.1)"
+              // width: 1,
+              // type: "solid"
+            }
+          },
+          splitLine: {
+            lineStyle: {
+              color: "rgba(255,255,255,.1)"
+            }
+          }
+        }
+      ],
+      series: [
+        {
+          name: "超标次数",
+          type: "bar",
+          barWidth: "35%",
+          data: data2,
+          itemStyle: {
+            barBorderRadius: 5
+          }
+        }
+      ]
+    };
+
+    // 把配置给实例对象
+    myChart.setOption(option);
+    window.addEventListener("resize", function() {
+      myChart.resize();
+    });
+
+    // 数据变化
+    var dataAll = [
+      { year: "2019", data: [200, 300, 300, 900, 1500, 1200, 600] },
+      { year: "2020", data: [300, 400, 350, 800, 1800, 1400, 700] }
+    ];
+
+    $(".bar h2 ").on("click", "a", function() {
+      option.series[0].data = dataAll[$(this).index()].data;
+      myChart.setOption(option);
+    });
+  }, 1000)
 })();
 
 // 折线图定制
@@ -208,9 +466,7 @@
     myChart.resize();
   });
 })();
-
 // 饼形图定制
-// 折线图定制
 (function() {
   // 基于准备好的dom，初始化echarts实例
   var myChart = echarts.init(document.querySelector(".pie .chart"));
@@ -270,387 +526,6 @@
     myChart.resize();
   });
 })();
-// 学习进度柱状图模块
-(function() {
-  // 基于准备好的dom，初始化echarts实例
-  var myChart = echarts.init(document.querySelector(".bar1 .chart"));
-
-  var data = [70, 34, 60, 78, 69];
-  var titlename = ["HTML5", "CSS3", "javascript", "VUE", "NODE"];
-  var valdata = [702, 350, 610, 793, 664];
-  var myColor = ["#1089E7", "#F57474", "#56D0E3", "#F8B448", "#8B78F6"];
-  option = {
-    //图标位置
-    grid: {
-      top: "10%",
-      left: "22%",
-      bottom: "10%"
-    },
-    xAxis: {
-      show: false
-    },
-    yAxis: [
-      {
-        show: true,
-        data: titlename,
-        inverse: true,
-        axisLine: {
-          show: false
-        },
-        splitLine: {
-          show: false
-        },
-        axisTick: {
-          show: false
-        },
-        axisLabel: {
-          color: "#fff",
-
-          rich: {
-            lg: {
-              backgroundColor: "#339911",
-              color: "#fff",
-              borderRadius: 15,
-              // padding: 5,
-              align: "center",
-              width: 15,
-              height: 15
-            }
-          }
-        }
-      },
-      {
-        show: true,
-        inverse: true,
-        data: valdata,
-        axisLabel: {
-          textStyle: {
-            fontSize: 12,
-            color: "#fff"
-          }
-        }
-      }
-    ],
-    series: [
-      {
-        name: "条",
-        type: "bar",
-        yAxisIndex: 0,
-        data: data,
-        barCategoryGap: 50,
-        barWidth: 10,
-        itemStyle: {
-          normal: {
-            barBorderRadius: 20,
-            color: function(params) {
-              var num = myColor.length;
-              return myColor[params.dataIndex % num];
-            }
-          }
-        },
-        label: {
-          normal: {
-            show: true,
-            position: "inside",
-            formatter: "{c}%"
-          }
-        }
-      },
-      {
-        name: "框",
-        type: "bar",
-        yAxisIndex: 1,
-        barCategoryGap: 50,
-        data: [100, 100, 100, 100, 100],
-        barWidth: 15,
-        itemStyle: {
-          normal: {
-            color: "none",
-            borderColor: "#00c1de",
-            borderWidth: 3,
-            barBorderRadius: 15
-          }
-        }
-      }
-    ]
-  };
-
-  // 使用刚指定的配置项和数据显示图表。
-  myChart.setOption(option);
-  window.addEventListener("resize", function() {
-    myChart.resize();
-  });
-})();
-// 折线图 优秀作品
-(function() {
-  // 基于准备好的dom，初始化echarts实例
-  var myChart = echarts.init(document.querySelector(".line1 .chart"));
-
-  option = {
-    tooltip: {
-      trigger: "axis",
-      axisPointer: {
-        lineStyle: {
-          color: "#dddc6b"
-        }
-      }
-    },
-    legend: {
-      top: "0%",
-      textStyle: {
-        color: "rgba(255,255,255,.5)",
-        fontSize: "12"
-      }
-    },
-    grid: {
-      left: "10",
-      top: "30",
-      right: "10",
-      bottom: "10",
-      containLabel: true
-    },
-
-    xAxis: [
-      {
-        type: "category",
-        boundaryGap: false,
-        axisLabel: {
-          textStyle: {
-            color: "rgba(255,255,255,.6)",
-            fontSize: 12
-          }
-        },
-        axisLine: {
-          lineStyle: {
-            color: "rgba(255,255,255,.2)"
-          }
-        },
-
-        data: [
-          "01",
-          "02",
-          "03",
-          "04",
-          "05",
-          "06",
-          "07",
-          "08",
-          "09",
-          "11",
-          "12",
-          "13",
-          "14",
-          "15",
-          "16",
-          "17",
-          "18",
-          "19",
-          "20",
-          "21",
-          "22",
-          "23",
-          "24",
-          "25",
-          "26",
-          "27",
-          "28",
-          "29",
-          "30"
-        ]
-      },
-      {
-        axisPointer: { show: false },
-        axisLine: { show: false },
-        position: "bottom",
-        offset: 20
-      }
-    ],
-
-    yAxis: [
-      {
-        type: "value",
-        axisTick: { show: false },
-        axisLine: {
-          lineStyle: {
-            color: "rgba(255,255,255,.1)"
-          }
-        },
-        axisLabel: {
-          textStyle: {
-            color: "rgba(255,255,255,.6)",
-            fontSize: 12
-          }
-        },
-
-        splitLine: {
-          lineStyle: {
-            color: "rgba(255,255,255,.1)"
-          }
-        }
-      }
-    ],
-    series: [
-      {
-        name: "播放量",
-        type: "line",
-        smooth: true,
-        symbol: "circle",
-        symbolSize: 5,
-        showSymbol: false,
-        lineStyle: {
-          normal: {
-            color: "#0184d5",
-            width: 2
-          }
-        },
-        areaStyle: {
-          normal: {
-            color: new echarts.graphic.LinearGradient(
-              0,
-              0,
-              0,
-              1,
-              [
-                {
-                  offset: 0,
-                  color: "rgba(1, 132, 213, 0.4)"
-                },
-                {
-                  offset: 0.8,
-                  color: "rgba(1, 132, 213, 0.1)"
-                }
-              ],
-              false
-            ),
-            shadowColor: "rgba(0, 0, 0, 0.1)"
-          }
-        },
-        itemStyle: {
-          normal: {
-            color: "#0184d5",
-            borderColor: "rgba(221, 220, 107, .1)",
-            borderWidth: 12
-          }
-        },
-        data: [
-          30,
-          40,
-          30,
-          40,
-          30,
-          40,
-          30,
-          60,
-          20,
-          40,
-          20,
-          40,
-          30,
-          40,
-          30,
-          40,
-          30,
-          40,
-          30,
-          60,
-          20,
-          40,
-          20,
-          40,
-          30,
-          60,
-          20,
-          40,
-          20,
-          40
-        ]
-      },
-      {
-        name: "转发量",
-        type: "line",
-        smooth: true,
-        symbol: "circle",
-        symbolSize: 5,
-        showSymbol: false,
-        lineStyle: {
-          normal: {
-            color: "#00d887",
-            width: 2
-          }
-        },
-        areaStyle: {
-          normal: {
-            color: new echarts.graphic.LinearGradient(
-              0,
-              0,
-              0,
-              1,
-              [
-                {
-                  offset: 0,
-                  color: "rgba(0, 216, 135, 0.4)"
-                },
-                {
-                  offset: 0.8,
-                  color: "rgba(0, 216, 135, 0.1)"
-                }
-              ],
-              false
-            ),
-            shadowColor: "rgba(0, 0, 0, 0.1)"
-          }
-        },
-        itemStyle: {
-          normal: {
-            color: "#00d887",
-            borderColor: "rgba(221, 220, 107, .1)",
-            borderWidth: 12
-          }
-        },
-        data: [
-          50,
-          30,
-          50,
-          60,
-          10,
-          50,
-          30,
-          50,
-          60,
-          40,
-          60,
-          40,
-          80,
-          30,
-          50,
-          60,
-          10,
-          50,
-          30,
-          70,
-          20,
-          50,
-          10,
-          40,
-          50,
-          30,
-          70,
-          20,
-          50,
-          10,
-          40
-        ]
-      }
-    ]
-  };
-
-  // 使用刚指定的配置项和数据显示图表。
-  myChart.setOption(option);
-  window.addEventListener("resize", function() {
-    myChart.resize();
-  });
-})();
-
 // 点位分布统计模块
 (function() {
   // 1. 实例化对象
@@ -722,5 +597,4 @@
     myChart.resize();
   });
 })
-
 ();
